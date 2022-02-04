@@ -1,0 +1,204 @@
+<html>
+  <head>
+<!-- STYLES -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+          integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/bwwc-square.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Monda&display=swap" rel="stylesheet">  <!-- Monda font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> <!-- Roboto font -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet"> <!-- Lora font -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+<!-- CDNS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gojs/1.8.2/go-debug.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+<!-- LOCAL JS -->
+    <script type="text/javascript" src="js/client.js"></script>
+
+    <title>Wage Gap Calculator</title>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <a class="navbar-brand"><img src="images/bwwc-square.png" class="logo">WAGE GAP CALCULATOR</a>
+    </nav>
+
+    <br>
+    <div class="main-content container">
+<!--  DATA ENTRY SECTION   -->
+      <div class="row">
+        <section id="data-entry" class="collapse in">
+          <div class="card card-main" style="max-width: 30%">
+            <div class="col-md-12">
+              <p><b>New User?</b> Some text
+              </p>
+              <div id="google_translate_element"></div>
+              <!--     GENDER SECTION      -->
+              <div id="gender-gap" class="card card-main">
+                <div class="card-header">Calculate Raw Gender Wage Gap</div>
+                <div class="card-body">
+                  <p>
+                    Difference between the annual compensation for working women and men at your organization.
+                  </p>
+                  <div class="spacer"></div>
+                  <!--     COMP F       -->
+                  <div class="row">
+                    <div class="col-sm"><b>Average Annual Compensation for all Women: </b></div>
+                    <div class="col-sm"><input type="text" id="comp-f" name="comp-f" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
+                                               value="" data-type="currency" placeholder="$100,000.00"></div>
+                  </div>
+                  <hr>
+                  <!--     COMP M       -->
+                  <div class="row">
+                    <div class="col-sm"><b>Average Annual Compensation for all Men: </b></div>
+                    <div class="col-sm"><input type="text" id="comp-m" name="comp-m" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
+                                               value="" data-type="currency" placeholder="$100,000.00"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!--     RACIAL SECTION      -->
+              <div class="spacer-m"></div>
+              <div id="racial-gap" class="card card-main">
+                <div class="card-header">Calculate Raw Racial Wage Gap</div>
+                <div class="card-body">
+                  <p>
+                    Difference between the annual compensation for all white employees and employees of color at your organization.
+                  </p>
+                  <div class="spacer"></div>
+                  <!--     COMP NW       -->
+                  <div class="row">
+                    <div class="col-sm"><b>Average Annual Compensation for all Employees of Color: </b></div>
+                    <div class="col-sm"><input type="text" id="comp-nw" name="comp-nw" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
+                                               value="" data-type="currency" placeholder="$100,000.00"></div>
+                  </div>
+                  <hr>
+                  <!--     COMP W       -->
+                  <div class="row">
+                    <div class="col-sm"><b>Average Annual Compensation for all White Employees: </b></div>
+                    <div class="col-sm"><input type="text" id="comp-w" name="comp-w" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
+                                               value="" data-type="currency" placeholder="$100,000.00"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!--     COMBINED SECTION      -->
+              <div class="spacer-m"></div>
+              <div id="combined-gap" class="card card-main">
+                <div class="card-header">Calculate Combined Gender and Racial Wage Gap</div>
+                <div class="card-body">
+                  <p>
+                    Difference between the annual compensation of employees by specific race and white men at your organization.
+                  </p>
+                  <div class="spacer"></div>
+                  <!--     COMP WM      -->
+                  <div class="row">
+                    <div class="col-sm"><b>Average  Annual Compensation for all White Men: </b></div>
+                    <div class="col-sm"><input type="text" id="comp-wm" name="comp-wm" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
+                                               value="" data-type="currency" placeholder="$100,000.00"></div>
+                  </div>
+
+                  <!--     COMP TABLE     -->
+                  <div class="row">
+                    <div class="col-sm"><b>Average  Annual Compensation for all Other Categories:</b><i onclick="showHelp('compare')" class="fa fa-info-circle input-help" aria-hidden="true"></i></div>
+                  </div>
+                  <div id="compare-help" class="row help-div">
+                    <div class="col-sm">
+                      <label>*Scroll through the table below and enter compensation information for each category that you have data for
+                      </label>
+                    </div>
+                  </div>
+                  <div class="table-wrapper wrapper">
+                    <table class="compare-table inner table-hover table-bordered">
+                      <thead>
+                      <tr id="header1">
+                      </tr>
+                      <tr id="header2">
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr id="table-body">
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+              <!--     SUBMIT SECTION      -->
+              <div class="spacer-m"></div>
+              <div id="submit-section" class="card card-main">
+                <div class="card-header">Get Your Results</div>
+                <div class="card-body">
+                  <!--     EMAIL      -->
+                  <div class="row">
+                    <div class="col-sm"><b>Email address</b><i onclick="showHelp('email')" class="fa fa-info-circle input-help" aria-hidden="true"></i></div>
+                    <div class="col-sm"><input type="text" id="email" name="email" value=""></div>
+                  </div>
+                  <div id="email-help" class="row help-div">
+                    <div class="col-sm">
+                      <label>*Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      </label>
+                    </div>
+                  </div>
+                  <!--     SUBMIT      -->
+                  <div class="spacer"></div>
+                  <div class="row">
+                    <div class="col-2">
+                      <a id="submit" style="width: 140%; color: white;" class="btn btn-theme mt-2 btn-block">Submit</a>
+                    </div>
+                    <div id="spinner" class="col-10 help-div">
+                      <i style="margin-left: 3%; margin-top: 2%;" class="fas fa-spinner fa-spin"></i>
+                    </div>
+                  </div>
+                  <br>
+                  <div id="error" class="hidden card card-main" style="background: #ffe3e3">
+                    <div class="card-body">
+                      <p id="error-text"  class="new-user"><b>Error panel 5</b></p>
+                    </div>
+                  </div>
+<!--                  <div id="success"  class="hidden card card-main" style="background: #e3ffe3">-->
+<!--                    <div class="card-body">-->
+<!--                      <p id="success-text"  class="new-user"><b>Your topic model was submitted successfully! You will receive-->
+<!--                        an email in at most a few hours when training is complete.</b></p>-->
+<!--                    </div>-->
+<!--                  </div>-->
+                </div>
+              </div>
+
+              <div class="spacer-m"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+<!--  RESULTS SECTION   -->
+      <div class="row">
+        <section id="results" class="collapse center">
+          <div class="col-md-12">
+            <div class="card card-main">
+              <div class="card-header">Results</div>
+              <div class="card-body">
+                <div id="res-tables"></div>
+                <a id="back" style="width: 20%; color: white;" class="btn btn-theme mt-2 btn-block">Back</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </body>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</html>
