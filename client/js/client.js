@@ -23,11 +23,25 @@ const NO_COMP_VAL = "Please enter the average total compensation for your select
 /*  HELPERS  */
 /* * * * * * */
 
-function createInputTable() {
+// create nested headers for combined tables
+function createNestedTableHeaders() {
+    let header1 = `<tr><th scope="col"></th>`;
+    let header2 = `<tr><th scope="col"></th>`;
     for (let i=0; i < categories.length; i++) {
         const cat = categories[i];
-        $('#header1').append(`<th scope="col" colspan="2">${cat.name}</th>`);
-        $('#header2').append(`<th scope="col">Female</th>`).append(`<th scope="col">Male</th>`);
+        header1 += `<th scope="col" colspan="2">${cat.name}</th>`;
+        header2 += `<th scope="col">Female</th><th scope="col">Male</th>`;
+    }
+
+    return header1 + header2;
+}
+
+// create table of inputs for combined section
+function createInputTable() {
+    $('#headers').append(createNestedTableHeaders());
+    $('#table-body').append(`<th scope="row">Average Annual Compensation</th>`);
+    for (let i=0; i < categories.length; i++) {
+        const cat = categories[i];
         $('#table-body').append(`<td><input type="text" id="${cat.code}F" name="${cat.code}F" pattern="^\\$\\d{1,3}(,\\d{3})*(\\.\\d+)?$"
                                                        value="" data-type="currency" placeholder="$100,000.00"></td>`)
             .append(`<td><input type="text" id="${cat.code}M" name="${cat.code}M" pattern="^\\$\\d{1,3}(,\\d{3})*(\\.\\d+)?$"
@@ -35,6 +49,7 @@ function createInputTable() {
     }
 }
 
+// format table body for binary inputs
 function formatBody(data) {
     let newRow = ``;
     for (let key of Object.keys(data['Your Results'])) {
@@ -46,11 +61,72 @@ function formatBody(data) {
     return newRow;
 }
 
+// format table body for table inputs
+function formatCombinedBody(data) {
+    let yourRow = `<tr>\n<th scope="row">Your Gap</th>\n`;
+    let compRow = `<tr>\n<th scope="row">Compare to Report</th>\n`;
+    let inputCodes = categories.flatMap(obj => [`${obj.code}F`, `${obj.code}M`]);
+    for (let code of inputCodes) {
+        if (code in data) {
+            yourRow += `<td>${data[code]}</td>`; // your val
+        }
+        compRow += `<td>0</td>`; // comp val
+    }
+
+    yourRow += '</tr>\n';
+    compRow += '</tr>\n';
+
+    return yourRow+compRow;
+
+}
+
+// format data for table inputs
+function formatCombinedData(compWM) {
+    let inputCodes = categories.flatMap(obj => [`${obj.code}F`, `${obj.code}M`]);
+    let inputs = inputCodes.map(code => $(`#${code}`).val());
+    let filled = inputs.map(val => val !== "");
+
+    let gaps = {};
+    for (let i = 0; i < inputs.length; i++) {
+        gaps[inputCodes[i]] = "-";
+        if (filled[i]) {
+            let compCat = (Number(inputs[i].replace(/[^0-9.-]+/g,"")));
+            let min = Math.min(compWM, compCat);
+            let max = Math.max(compWM, compCat);
+            gaps[inputCodes[i]] = 1 - min/max;
+        }
+    }
+
+    return gaps;
+}
+
+// format table for table inputs
+function formatCombinedTable(compWM) {
+    let data = formatCombinedData(Number(compWM.replace(/[^0-9.-]+/g,"")));
+    let header = createNestedTableHeaders();
+    let body = formatCombinedBody(data);
+
+    let newTable = `
+      <div class="table-wrapper wrapper">
+        <table class="compare-table inner table-hover table-bordered">
+          <thead>
+          ${header}
+          </thead>
+          <tbody>
+          ${body}
+          </tbody>
+      </table>
+      </div>
+    `;
+
+    $('#res-tables').append(newTable);
+}
+
+// format data for binary inputs
 function formatData(comp1, comp2, labels) {
     let min = Math.min(comp1, comp2);
     let max = Math.max(comp1, comp2);
     let gap = 1 - min/max;
-    console.log(min, max, gap);
 
     let vals = [comp1, comp2, gap];
     let keys = [`Avg. total compensation (${labels[0]})`, `Avg. total compensation (${labels[1]})`, 'Raw Wage Gap'];
@@ -63,25 +139,25 @@ function formatData(comp1, comp2, labels) {
         res['Compare to Report'][k] = 0;
     }
 
-    console.log(res);
-
     return res;
 
     // return format {'Your Results': {'Avg. total compensation (female)': compF, 'Avg. total compensation (male)': compM, 'Raw Wage Gap': gap},
     //     'Combined Results': {'Avg. total compensation (female)': compF, 'Avg. total compensation (male)': compM, 'Raw Wage Gap': gap}}
 }
 
+// format headers for binary-input tables
 function formatHeader(headerNames) {
     let newRow = `<tr>\n<th scope="col"></th>\n`;
     for (let h of headerNames) {
-    // for (let i = 0; i < headerNames.length; i++) {
         newRow += `<th scope="col">${h}</th>\n`
     }
     newRow += '</tr>';
     return newRow;
 }
 
-function formatTable(data) {
+// format tables for binary inputs
+function formatTable(comp1, comp2, labels) {
+    let data = formatData(Number(comp1.replace(/[^0-9.-]+/g,"")), Number(comp2.replace(/[^0-9.-]+/g,"")), labels);
     let header = formatHeader(Object.keys(data));
     let body = formatBody(data);
 
@@ -180,32 +256,43 @@ function googleTranslateElementInit() {
     new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'zh-CN,cs,da,nl,en,et,fr'}, 'google_translate_element');
 }
 
+// toggle help section (when clicking the info icon)
 function showHelp(id) {
     let helpId = id+'-help';
     $(`#${helpId}`).toggle();
 }
 
+// make sure either both inputs or neither input is filled for binary sections
 function validateBinaryInputs(comp1, comp2, section) {
     if (comp1 === "" ^ comp2 === "") { // need both or neither to be filled (XOR)
         $('#error-text').html(`Please fill out both fields in Section ${section} or leave them both blank`);
         $('#error').removeClass('hidden');
-        return false;
+        return {display: false, valid: false};
     }
-    return true;
+
+    if (comp1 === "" && comp2 === "") { // don't display table if nothing entered
+        return {display: false, valid: true};
+    }
+    return {display: true, valid: true};
 }
 
+// make sure table and white male input are either both empty or both filled
 function validateTableInputs(compWM) {
     let inputCodes = categories.flatMap(obj => [`${obj.code}F`, `${obj.code}M`]);
     let inputs = inputCodes.map(code => $(`#${code}`).val());
-    let allBlank = inputs.every(inp => inp === "");
-    let anyFilled = inputs.some(inp => inp !== "");
+    let allBlank = inputs.every(val => val === "");
+    let anyFilled = inputs.some(val => val !== "");
 
     if ((compWM === "" && anyFilled) || (compWM !== "" && allBlank)) { // need both or neither to be filled (XOR)
         $('#error-text').html(`Please fill out both fields in Section 3 or leave them both blank`);
         $('#error').removeClass('hidden');
-        return false;
+        return {display: false, valid: false};
     }
-    return true;
+
+    if (compWM === "" && allBlank) { // don't display table if nothing entered
+        return {display: false, valid: true};
+    }
+    return {display: true, valid: true};
 }
 
 /* * * * * * */
@@ -220,7 +307,6 @@ $(document).ready(function() {
 
     $("input[data-type='currency']").on({
         keyup: function() {
-            // console.log($(this).attr('id'));
             formatCurrency($(this));
         },
         blur: function() {
@@ -236,19 +322,33 @@ $(document).ready(function() {
     $('#submit').click(function () {
         let [compF, compM, compW, compNW, compWM] = [$('#comp-f').val(), $('#comp-m').val(), $('#comp-w').val(), $('#comp-nw').val(), $('#comp-wm').val()];
         // check right number of inputs are present
-        if (validateBinaryInputs(compF, compM, 1) &&
-            validateBinaryInputs(compNW, compW, 2) &&
-            validateTableInputs(compWM)
+        let validGenderInputs = validateBinaryInputs(compF, compM, 1);
+        let validRacialInputs = validateBinaryInputs(compNW, compW, 2);
+        let validTableInputs = validateTableInputs(compWM);
+        if (validGenderInputs.valid &&
+            validRacialInputs.valid &&
+            validTableInputs.valid
         ) {
             $('#error').addClass('hidden');
 
+            $('#res-tables').empty();
             // add section for gender gap results
-            $('#res-tables').empty().append(`<h5>Raw Gender Wage Gap</h5>`);
-            formatTable(formatData(Number(compF.replace(/[^0-9.-]+/g,"")), Number(compM.replace(/[^0-9.-]+/g,"")), ['female', 'male']));
+            if (validGenderInputs.display) {
+                $('#res-tables').append(`<h5>Raw Gender Wage Gap</h5>`);
+                formatTable(compF, compM, ['female', 'male']);
+            }
 
-            // add section of racial gap rseults
-            $('#res-tables').append(`<h5>Raw Racial Wage Gap</h5>`);
-            formatTable(formatData(Number(compW.replace(/[^0-9.-]+/g,"")), Number(compNW.replace(/[^0-9.-]+/g,"")), ['white employees', 'employees of color']));
+            // add section for racial gap rseults
+            if (validRacialInputs.display) {
+                $('#res-tables').append(`<h5>Raw Racial Wage Gap</h5>`);
+                formatTable(compW, compNW, ['white employees', 'employees of color']);
+            }
+
+            // add section for combined gap rseults
+            if (validTableInputs.display) {
+                $('#res-tables').append(`<h5>Combined Raw Gender and Racial Wage Gap</h5>`);
+                formatCombinedTable(compWM);
+            }
 
             // toggle collapsible sections to hide calculator and show results
             $("#data-entry").hide();
