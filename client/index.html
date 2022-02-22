@@ -1,198 +1,282 @@
 <html>
-  <head>
-<!-- STYLES -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
-          integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+<head>
+  <!-- STYLES -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+        integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="assets/images/bwwc-square.png" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"> <!-- Monserrat font -->
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&display=swap" rel="stylesheet"> <!-- Lora font -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="images/bwwc-square.png" type="image/x-icon" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Monda&display=swap" rel="stylesheet">  <!-- Monda font -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> <!-- Roboto font -->
-    <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet"> <!-- Lora font -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
-          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <!-- CDNS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gojs/1.8.2/go-debug.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<!-- CDNS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gojs/1.8.2/go-debug.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <!-- LOCAL JS -->
+<!--  <script type="text/javascript" src="assets/languages.json"></script>-->
+  <script type="text/javascript" src="js/client.js"></script>
 
-<!-- LOCAL JS -->
-    <script type="text/javascript" src="js/client.js"></script>
+  <title>Employer Wage Gap Calculator</title>
+</head>
 
-    <title>Wage Gap Calculator</title>
-  </head>
+<body>
+<!-- NAV -->
+<nav id="light-nav" class="navbar navbar-expand-lg navbar-light"> <!-- LIGHT NAV -->
+  <a class="navbar-brand" href="index.html"><img src="assets/images/mowa.png" class="logo"><img src="assets/images/bwwc-square.png" class="logo">EMPLOYER WAGE GAP CALCULATOR</a>
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a id="translate" class="btn" data-toggle="modal" data-target="#translate-modal">TRANSLATE</a>
+    </li>
+  </ul>
+</nav>
+<nav id="dark-nav" class="navbar navbar-expand-lg navbar-dark sticky-top"> <!-- DARK NAV (STICKY) -->
+<!--  <a class="nav-link" onclick="$('#gender-section').scrollIntoView(true);">GENDER WAGE GAP</a>-->
+  <a class="nav-link" href="#gender-section">GENDER WAGE GAP</a>
+  <a class="nav-link" href="#racial-section">RACIAL WAGE GAP</a>
+  <a class="nav-link" href="#combined-section">GENDER AND RACIAL WAGE GAP</a>
+</nav>
 
-  <body>
-
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-      <a class="navbar-brand"><img src="images/bwwc-square.png" class="logo">WAGE GAP CALCULATOR</a>
-    </nav>
-
-    <br>
-    <div class="main-content container">
-<!--  DATA ENTRY SECTION   -->
-      <div class="row">
-        <section id="data-entry" class="collapse in">
-          <div class="card card-main" style="max-width: 30%">
-            <div class="col-md-12">
-              <p><b>New User?</b> Some text
-              </p>
-              <div id="google_translate_element"></div>
-              <!--     GENDER SECTION      -->
-              <div id="gender-gap" class="card card-main">
-                <div class="card-header">Calculate Raw Gender Wage Gap</div>
-                <div class="card-body">
-                  <p>
-                    Difference between the annual compensation for working women and men at your organization.
-                  </p>
-                  <div class="spacer"></div>
-                  <!--     COMP F       -->
-                  <div class="row">
-                    <div class="col-sm"><b>Average Annual Compensation for all Women: </b></div>
-                    <div class="col-sm"><input type="text" id="comp-f" name="comp-f" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
-                                               value="" data-type="currency" placeholder="$100,000.00"></div>
-                  </div>
-                  <hr>
-                  <!--     COMP M       -->
-                  <div class="row">
-                    <div class="col-sm"><b>Average Annual Compensation for all Men: </b></div>
-                    <div class="col-sm"><input type="text" id="comp-m" name="comp-m" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
-                                               value="" data-type="currency" placeholder="$100,000.00"></div>
-                  </div>
-                </div>
-              </div>
-
-              <!--     RACIAL SECTION      -->
-              <div class="spacer-m"></div>
-              <div id="racial-gap" class="card card-main">
-                <div class="card-header">Calculate Raw Racial Wage Gap</div>
-                <div class="card-body">
-                  <p>
-                    Difference between the annual compensation for all white employees and employees of color at your organization.
-                  </p>
-                  <div class="spacer"></div>
-                  <!--     COMP NW       -->
-                  <div class="row">
-                    <div class="col-sm"><b>Average Annual Compensation for all Employees of Color: </b></div>
-                    <div class="col-sm"><input type="text" id="comp-nw" name="comp-nw" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
-                                               value="" data-type="currency" placeholder="$100,000.00"></div>
-                  </div>
-                  <hr>
-                  <!--     COMP W       -->
-                  <div class="row">
-                    <div class="col-sm"><b>Average Annual Compensation for all White Employees: </b></div>
-                    <div class="col-sm"><input type="text" id="comp-w" name="comp-w" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
-                                               value="" data-type="currency" placeholder="$100,000.00"></div>
-                  </div>
-                </div>
-              </div>
-
-              <!--     COMBINED SECTION      -->
-              <div class="spacer-m"></div>
-              <div id="combined-gap" class="card card-main">
-                <div class="card-header">Calculate Combined Gender and Racial Wage Gap</div>
-                <div class="card-body">
-                  <p>
-                    Difference between the annual compensation of employees by specific race and white men at your organization.
-                  </p>
-                  <div class="spacer"></div>
-                  <!--     COMP WM      -->
-                  <div class="row">
-                    <div class="col-sm"><b>Average  Annual Compensation for all White Men: </b></div>
-                    <div class="col-sm"><input type="text" id="comp-wm" name="comp-wm" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
-                                               value="" data-type="currency" placeholder="$100,000.00"></div>
-                  </div>
-
-                  <!--     COMP TABLE     -->
-                  <div class="row">
-                    <div class="col-sm"><b>Average  Annual Compensation for all Other Categories:</b><i onclick="showHelp('compare')" class="fa fa-info-circle input-help" aria-hidden="true"></i></div>
-                  </div>
-                  <div id="compare-help" class="row help-div">
-                    <div class="col-sm">
-                      <label>*Scroll through the table below and enter compensation information for each category that you have data for
-                      </label>
-                    </div>
-                  </div>
-                  <div class="table-wrapper wrapper">
-                    <table class="compare-table inner table-hover table-bordered">
-                      <thead id="headers"></thead>
-                      <tbody>
-                        <tr id="table-body"></tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                </div>
-              </div>
-              <!--     SUBMIT SECTION      -->
-              <div class="spacer-m"></div>
-              <div id="submit-section" class="card card-main">
-                <div class="card-header">Get Your Results</div>
-                <div class="card-body">
-                  <!--     EMAIL      -->
-                  <div class="row">
-                    <div class="col-sm"><b>Email address</b><i onclick="showHelp('email')" class="fa fa-info-circle input-help" aria-hidden="true"></i></div>
-                    <div class="col-sm"><input type="text" id="email" name="email" value=""></div>
-                  </div>
-                  <div id="email-help" class="row help-div">
-                    <div class="col-sm">
-                      <label>*Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      </label>
-                    </div>
-                  </div>
-                  <!--     SUBMIT      -->
-                  <div class="spacer"></div>
-                  <div class="row">
-                    <div class="col-2">
-                      <a id="submit" style="width: 140%; color: white;" class="btn btn-theme mt-2 btn-block">Submit</a>
-                    </div>
-                    <div id="spinner" class="col-10 help-div">
-                      <i style="margin-left: 3%; margin-top: 2%;" class="fas fa-spinner fa-spin"></i>
-                    </div>
-                  </div>
-                  <br>
-                  <div id="error" class="hidden card card-main" style="background: #ffe3e3">
-                    <div class="card-body">
-                      <p id="error-text"  class="new-user"><b>Error panel 5</b></p>
-                    </div>
-                  </div>
-<!--                  <div id="success"  class="hidden card card-main" style="background: #e3ffe3">-->
-<!--                    <div class="card-body">-->
-<!--                      <p id="success-text"  class="new-user"><b>Your topic model was submitted successfully! You will receive-->
-<!--                        an email in at most a few hours when training is complete.</b></p>-->
-<!--                    </div>-->
-<!--                  </div>-->
-                </div>
-              </div>
-
-              <div class="spacer-m"></div>
-            </div>
+<!--  TRANSLATE MODAL  -->
+<div class="modal fade" id="translate-modal" tabindex="-1" role="dialog" aria-labelledby="translate-modal-label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="translate-modal-label">Choose Language</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="hidden" id="google_translate_element"></div>
+        <div class="row">
+          <div class="col-sm">
+            <ul id="translate-col1" style="list-style-type:none;">
+            </ul>
           </div>
-        </section>
+          <div class="col-sm">
+            <ul id="translate-col2" style="list-style-type:none;">
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="data-entry" class="collapse in">
+  <!-- HEAD -->
+  <div id="head-section" class="banner main-content">
+    <div class="container">
+      <h1>IF YOU DON'T <span style="color: #FB4D42;">SEE IT</span>, YOU CAN'T <span style="color: #288BE4">CHANGE IT</span>.</h1>
+      <p>
+        An important first step in achieving pay equity is to examine your own organization's salary data to determine whether gender and racial wage gaps exist.
+      </p>
+      <p>
+        The Boston Women's Workforce Council (BWWC), in conjunction with the Boston Mayor's Office of Women's Advancement (MOWA),
+        has created this easy-to-use tool to help you do the math.
+      </p>
+      <p>
+        After calculating your wage gaps, we encourage you to benchmark them against the BWWC <b><u> 2021 Gender and
+        Racial Wage Gap Measurement Results</u></b> to compare to Greater Boston employers who have signed the <b><u>100% Talent Compact</u></b>.
+      </p>
+      <div class="row" style="justify-content: center">
+        <a id="start" href="#gender-section" class="btn btn-theme mt-2 btn-block">START NOW</a>
+      </div>
+      <!--    <p>-->
+      <!--      Follow these steps below to identify if you have gender and racial wage gaps at your organization.-->
+      <!--    </p>-->
+    </div>
+  </div>
+  <!-- GENDER SECTION -->
+  <div id="gender-section" class="main-content">
+    <div class="container">
+      <h3>GENDER WAGE GAP</h3>
+      <p>
+        Difference between the annual compensation for working women and men at your organization
+      </p>
+      <div class="row">
+        <div class="col-8"><label>AVERAGE ANNUAL COMPENSATION FOR ALL WOMEN </label></div>
+        <div class="col-4"><input type="text" id="comp-f" name="comp-f" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
+                                  value="" data-type="currency" placeholder="$100,000.00"></div>
+      </div>
+      <hr>
+      <!--     COMP M       -->
+      <div class="row">
+        <div class="col-8"><label>AVERAGE ANNUAL COMPENSATION FOR ALL MEN </label></div>
+        <div class="col-4"><input type="text" id="comp-m" name="comp-m" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
+                                  value="" data-type="currency" placeholder="$100,000.00"></div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <!-- RACIAL SECTION -->
+  <div id="racial-section" class="main-content">
+    <div class="container">
+      <h3>RACIAL WAGE GAP</h3>
+      <p>
+        Difference between the annual compensation for all employees of color and all white employees at your organization.
+      </p>
+      <!--     COMP NW       -->
+      <div class="row">
+        <div class="col-8"><label>AVERAGE ANNUAL COMPENSATION FOR ALL EMPLOYEES OF COLOR </label></div>
+        <div class="col-4"><input type="text" id="comp-nw" name="comp-nw" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
+                                  value="" data-type="currency" placeholder="$100,000.00"></div>
+      </div>
+      <hr>
+      <!--     COMP W     -->
+      <div class="row">
+        <div class="col-8"><label>AVERAGE ANNUAL COMPENSATION FOR ALL WHITE EMPLOYEES </label></div>
+        <div class="col-4"><input type="text" id="comp-w" name="comp-w" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
+                                  value="" data-type="currency" placeholder="$100,000.00"></div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <!-- COMBINED SECTION -->
+  <div id="combined-section" class="main-content">
+    <div class="container">
+      <h3>GENDER AND RACIAL WAGE GAP</h3>
+      <p>
+        Difference between the annual compensation for female employees by speciﬁc race and white men at your organization.
+      </p>
+      <!--     COMP NW       -->
+      <div class="row">
+        <div class="col-sm"><label>AVERAGE ANNUAL COMPENSATION FOR ALL FEMALE EMPLOYEES IN EACH RACIAL CATEGORY </label></div>
+      </div>
+      <div id="combined-inputs"></div>
+      <hr>
+      <!--     COMP W     -->
+      <div class="row">
+        <div class="col-8"><label>AVERAGE ANNUAL COMPENSATION FOR ALL WHITE MEN </label></div>
+        <div class="col-4"><input type="text" id="comp-wm" name="comp-wm" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
+                                  value="" data-type="currency" placeholder="$100,000.00"></div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <!--  SUBMIT SECTION  -->
+  <div id="email-section" class="main-content">
+    <div class="container">
+      <p>
+        Please enter your email to view your wage gap results. The BWWC and MOWA will not have access to any of your
+        confidential information. Email would only be used to follow up on tool's utility and any enhancements you'd
+        like to see in the future.
+      </p>
+      <!--     EMAIL       -->
+      <div class="row">
+        <div class="col-sm">
+          <label style="float: left; color: black" for="email">EMAIL </label>
+          <input style="float: left; margin-left: 2%" type="text" id="email" name="email" value="">
+        </div>
       </div>
 
-<!--  RESULTS SECTION   -->
+      <!--  SUBMIT BUTTON  -->
       <div class="row">
-        <section id="results" class="collapse center" style="width: 100%;">
-          <div class="col-md-12">
-            <div class="card card-main">
-              <div class="card-header">Results</div>
-              <div class="card-body">
-                <div id="res-tables"></div>
-                <a id="back" style="width: 20%; color: white;" class="btn btn-theme mt-2 btn-block">Back</a>
-              </div>
-            </div>
-          </div>
-        </section>
+        <div class="col-sm"><br><a id="submit" class="btn btn-theme mt-2 btn-block">SEE RESULTS</a></div>
+      </div>
+
+      <!--  ERROR PANEL  -->
+      <div id="error" class="hidden card card-main" style="background: #ffe3e3">
+        <div class="card-body">
+          <p id="error-text"  class="new-user"><b>Error panel 5</b></p>
+        </div>
+      </div>
+      <!--  ERROR PANEL  -->
+      <div id="warning" class="hidden card card-main" style="background: #ffffe3">
+        <div class="card-body">
+          <p id="warning-text"  class="new-user"><b>No data has been entered - nothing to display</b></p>
+        </div>
       </div>
 
     </div>
-  </body>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  </div>
 
+  <div id="privacy" class="end-tag main-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <h6>Ensuring Your Privacy</h6>
+          <p>In order to secure your privacy and anonymity, our software ensures that the data you input is not accessible to anyone else.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="results" class="collapse" style="width: 100%;">
+  <!-- HEAD -->
+  <div id="res-head-section" class="banner main-content">
+    <div class="container">
+      <h1>EMPLOYER WAGE GAP SCORECARD</h1>
+      <p>
+        Your results on this page show the raw wage gaps at your organization. Understanding the difference between the
+        raw gender wage gap and equal pay for equal work is an important first step in measuring and understanding internal wage gaps.
+      </p>
+      <p>
+        Equal pay for equal work requires that people doing the same work be paid the same amount, and has been a law since 1963.
+        You likely do pay audits in order to be compliant with the law currently.
+      </p>
+    </div>
+  </div>
+
+  <div id="results-section" class="main-content">
+    <div class="container">
+      <h3>RESULTS</h3>
+      <p>
+        The raw wage gap, or unadjusted wage gap, goes further to consider where underrepresented groups sit in an
+        organization, helping us understand the power gaps that exist. Biases and lack of access to promotions, bonuses,
+        and flexibility can perpetuate inequities across all levels of an organization, even if equal pay for equal
+        work is in place.
+      </p>
+      <p>
+        We acknowledge that measuring raw wage gaps is not a pass/fail exercise and that these gaps often fluctuate
+        based on turnover, promotions, changes within organizational structure, and other factors. Our goal is that
+        doing the math will encourage internal reflection, conversation, and action among your leadership team.
+      </p>
+      <div id="res-tables"></div>
+
+      <br>
+      <a id="back" class="btn btn-theme mt-2 btn-block">Back</a>
+    </div>
+  </div>
+
+  <div class="end-tag main-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <p>Congratulations on taking the first step in understanding your wage gaps. We want to be involved in
+            continuing the conversation. Please reach out to us at <a href="mailto:team@thebwwc.org">team@thebwwc.org</a> with any questions and visit our
+            website: <a href="https://thebwwc.org">thebwwc.org</a> to learn more.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+
+<div class="spacer"></div>
+
+<!-- FOOTER -->
+<footer style="text-align: center">
+  <section>
+    <div>
+      <span>If you'd like to learn more about measuring gender and racial</span><br>
+      <span>wage gaps, please visit <a href="https://thebwwc.org" target="_blank">thebwwc.org</a></span><br>
+    </div>
+  </section>
+</footer>
+
+</body>
 </html>
