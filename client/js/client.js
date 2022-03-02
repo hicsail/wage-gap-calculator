@@ -4,12 +4,24 @@
 
 const urlParams = new URLSearchParams(window.location.search);
 // categories to compare white male salary to
-const categories = [{name: "HISPANIC/LATINX", code: "hisp", label:"Hispanic/Latinx"}, {name: "WHITE", code: "white", label: "White"},
-    {name: "BLACK/AFRICAN AMERICAN", code: "afr", label: "Black/African American"},
-    {name: "NATIVE HAWAIIAN OR PACIFIC ISLANDER", code: "hawaii", label: "Native Hawaiian or Pacific Islander"},
-    {name: "ASIAN", code: "asian", label: "Asian"}, {name: "AMERICAN INDIAN/ALASKA NATIVE", code: "ind", label: "American Indian/Alaska Native"},
-    {name: "TWO OR MORE RACES (NOT HISPANIC OR LATINX)", code: "two", label: "Two or More Races (Not Hispanic or Latinx)"},
-    {name: "UNREPORTED", code: "unr", label: "Unreported"}];
+const categories = [{name: "HISPANIC/LATINX", code: "hisp", label:"Hispanic/Latinx Female"}, {name: "WHITE", code: "white", label: "White Female"},
+    {name: "BLACK/AFRICAN AMERICAN", code: "afr", label: "Black/African American Female"},
+    {name: "NATIVE HAWAIIAN OR PACIFIC ISLANDER", code: "hawaii", label: "Native Hawaiian or Pacific Islander Female"},
+    {name: "ASIAN", code: "asian", label: "Asian Female"}, {name: "AMERICAN INDIAN/ALASKA NATIVE", code: "ind", label: "American Indian/Alaska Native Female"},
+    {name: "TWO OR MORE RACES (NOT HISPANIC OR LATINX)", code: "two", label: "Two or More Races (Not Hispanic or Latinx) Female"},
+    {name: "UNREPORTED", code: "unr", label: "Unreported Female"}];
+
+const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
+let compF, compM, compW, compNW, compWM;
+let report;
 
 /* * * * * * */
 /*  HELPERS  */
@@ -107,24 +119,30 @@ function formatBody(data) {
             rowStyle = "border-bottom:5px solid #dee2e6"
         }
         newRow += `<tr style="${rowStyle}">\n<th scope="row" style="border-left: hidden;">${key}</th>\n`; // row header
-        newRow += `<td>${data['Your Results'][key]}</td>`; // your val
-        newRow += `<td>${data['Report'][key]}</td>`; // report val
+        if (isNaN(data['Your Results'][key])) {
+            newRow += `<td>-</td>`; // null val
+        } else {
+            newRow += `<td>${formatter.format(data['Your Results'][key])}</td>`; // your val
+        }
+        newRow += `<td>${formatter.format(data['Report'][key])}</td>`; // report val
         newRow += '</tr>\n';
     }
     return newRow;
 }
 
 // format data for binary inputs
-function formatData(compDict, compareValue) {
+function formatData(compDict, compareValue, display) {
     let res = {'Your Results': {}, 'Report': {}};
     for (let label of Object.keys(compDict)) {
-        res['Your Results'][`${label} Avg. total compensation`] = compDict[label];
-        res['Your Results'][`${label} Wage Gap`] = compDict[label];
-        if (compDict[label] !== "-") { // only fill in value with gap if there is a number for the comp
+        if (display) { // only fill in value with gap if there is a number for the comp
+            res['Your Results'][`${label} Avg. Total Compensation`] = compDict[label];
             res['Your Results'][`${label} Wage Gap`] = 1 - compDict[label]/compareValue;
+        } else {
+            res['Your Results'][`${label} Avg. Total Compensation`] = '-';
+            res['Your Results'][`${label} Wage Gap`] = '-';
         }
-        res['Report'][`${label} Avg. total compensation`] = 0;
-        res['Report'][`${label} Wage Gap`] = 0;
+        res['Report'][`${label} Avg. Total Compensation`] = report[`${label} Avg. Total Compensation`];
+        res['Report'][`${label} Wage Gap`] = report[`${label} Wage Gap`];
     }
 
     return res;
@@ -141,14 +159,13 @@ function formatHeader(headerNames) {
 }
 
 // format tables for binary inputs
-function formatTable(title, compDict, compareValue) {
-    let data = formatData(compDict, compareValue);
+function formatTable(title, compDict, compareValue, display) {
+    let data = formatData(compDict, compareValue, display);
+    console.log(data);
     let header = formatHeader(Object.keys(data));
     let body = formatBody(data);
 
     let newTable = `
-      <div class="result-row">
-        <h5><label>${title}</label></h5>
         <table class="table table-hover table-bordered">
           <thead>
           ${header}
@@ -157,11 +174,9 @@ function formatTable(title, compDict, compareValue) {
           ${body}
           </tbody>
         </table>
-      </div>
-      <hr>
     `;
 
-    $('#res-tables').append(newTable);
+    return newTable;
 }
 
 // Currency formatting from:
@@ -245,10 +260,30 @@ function googleTranslateElementInit() {
     new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
 }
 
+function loadReport() {
+    fetch("assets/report.json")
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            report = data;
+        });
+}
+
 // toggle help section (when clicking the info icon)
-function showHelp(id) {
-    let helpId = id+'-help';
-    $(`#${helpId}`).toggle();
+function showDefinitions(event) {
+    event.stopPropagation();
+    $('#definitions-modal').modal('show')
+}
+
+function toggleResultTableState(display, headerId, bodyId) {
+    if (display) {
+        $(headerId).removeClass('collapsed').attr('aria-expanded', true);
+        $(bodyId).addClass('show');
+    } else {
+        $(headerId).addClass('collapsed').attr('aria-expanded', false);
+        $(bodyId).removeClass('show');
+    }
 }
 
 // make sure either both inputs or neither input is filled for binary sections
@@ -317,15 +352,15 @@ function validateTableInputs(compWM) {
 $(document).ready(function() {
     // $("#results").show();
     $("#data-entry").show(); // show calculator first
+    loadReport();
 
     // fill out headers and cells in input table
-    // createInputTable();
     createCombinedSectionInputs();
 
     // create translation option fields in UI and attach click handlers
     createTranslationOptions();
     $('body').on('click', 'a.lang-link', function() {
-        // do something
+        // trigger google translate web element
         var value = $(this).attr("rel");
         console.log(value);
         var jObj = $('.goog-te-combo');
@@ -389,21 +424,18 @@ $(document).ready(function() {
                 Number(compM.replace(/[^0-9.-]+/g,"")), Number(compW.replace(/[^0-9.-]+/g,"")),
                 Number(compNW.replace(/[^0-9.-]+/g,"")), Number(compWM.replace(/[^0-9.-]+/g,""))];
 
-            $('#res-tables').empty();
-            // add section for gender gap results
-            if (validGenderInputs.display) {
-                formatTable("Raw Gender Wage Gap", {Female: compF}, compM);
-            }
+            // toggle initial state of tables based on whether input was provided
+            toggleResultTableState(validGenderInputs.display, '#gender-res-a', '#gender-res-body');
+            toggleResultTableState(validRacialInputs.display, '#racial-res-a', '#racial-res-body');
+            toggleResultTableState(validTableInputs.display, '#combined-res-a', '#combined-res-body');
 
-            // add section for racial gap rseults
-            if (validRacialInputs.display) {
-                formatTable("Raw Racial Wage Gap", {'Employees of Color': compNW}, compW);
-            }
-
-            // add section for combined gap results
-            if (validTableInputs.display) {
-                formatTable("Raw Gender and Racial Wage Gap", constructCombinedCompDict(), compWM);
-            }
+            // append the correct tables to the correct divs
+            $('#gender-res').empty()
+                .append(formatTable("Raw Gender Wage Gap", {Female: compF}, compM, validGenderInputs.display));
+            $('#racial-res').empty()
+                .append(formatTable("Raw Racial Wage Gap", {'Employees of Color': compNW}, compW, validRacialInputs.display));
+            $('#combined-res').empty()
+                .append(formatTable("Raw Gender and Racial Wage Gap", constructCombinedCompDict(), compWM, validTableInputs.display));
 
             // toggle collapsible sections to hide calculator and show results
             $("#data-entry").hide();

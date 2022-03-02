@@ -21,7 +21,6 @@
   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <!-- LOCAL JS -->
-<!--  <script type="text/javascript" src="assets/languages.json"></script>-->
   <script type="text/javascript" src="js/client.js"></script>
 
   <title>Employer Wage Gap Calculator</title>
@@ -30,7 +29,7 @@
 <body>
 <!-- NAV -->
 <nav id="light-nav" class="navbar navbar-expand-lg navbar-light"> <!-- LIGHT NAV -->
-  <a class="navbar-brand" href="index.html"><img src="assets/images/mowa.png" class="logo"><img src="assets/images/bwwc-square.png" class="logo">EMPLOYER WAGE GAP CALCULATOR</a>
+  <a class="navbar-brand"><img src="assets/images/mowa.png" class="logo"><img src="assets/images/bwwc-square.png" class="logo">EMPLOYER WAGE GAP CALCULATOR</a>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item">
       <a id="translate" class="btn" data-toggle="modal" data-target="#translate-modal">TRANSLATE</a>
@@ -38,7 +37,6 @@
   </ul>
 </nav>
 <nav id="dark-nav" class="navbar navbar-expand-lg navbar-dark sticky-top"> <!-- DARK NAV (STICKY) -->
-<!--  <a class="nav-link" onclick="$('#gender-section').scrollIntoView(true);">GENDER WAGE GAP</a>-->
   <a class="nav-link" href="#gender-section">GENDER WAGE GAP</a>
   <a class="nav-link" href="#racial-section">RACIAL WAGE GAP</a>
   <a class="nav-link" href="#combined-section">GENDER AND RACIAL WAGE GAP</a>
@@ -92,9 +90,6 @@
       <div class="row" style="justify-content: center">
         <a id="start" href="#gender-section" class="btn btn-theme mt-2 btn-block">START NOW</a>
       </div>
-      <!--    <p>-->
-      <!--      Follow these steps below to identify if you have gender and racial wage gaps at your organization.-->
-      <!--    </p>-->
     </div>
   </div>
   <!-- GENDER SECTION -->
@@ -147,7 +142,7 @@
     <div class="container">
       <h3>GENDER AND RACIAL WAGE GAP</h3>
       <p>
-        Difference between the annual compensation for female employees by speciﬁc race and white men at your organization.
+        Difference between the annual compensation for female employees by specfic race and white men at your organization.
       </p>
       <!--     COMP NW       -->
       <div class="row">
@@ -213,6 +208,7 @@
   </div>
 </section>
 
+<!-- RESULTS -->
 <section id="results" class="collapse" style="width: 100%;">
   <!-- HEAD -->
   <div id="res-head-section" class="banner main-content">
@@ -232,6 +228,84 @@
   <div id="results-section" class="main-content">
     <div class="container">
       <h3>RESULTS</h3>
+      <div id="res-collapse">
+        <!--    accordion styling based on https://codepen.io/ferdisahin/pen/PXXPXM    -->
+        <div class="accordion" id="faq">
+          <div class="card">
+            <div class="card-header" id="gender-res-header">
+              <a id="gender-res-a" class="btn btn-header-link" data-toggle="collapse" data-target="#gender-res-body"
+                 aria-expanded="true" aria-controls="gender-res-body">
+                <label>Raw Gender Wage Gap</label><i onclick="showDefinitions(event)" class="fa fa-info-circle" aria-hidden="true"></i>
+              </a>
+            </div>
+            <div id="gender-res-body" class="collapse show" aria-labelledby="gender-res-header">
+              <!-- GENDER TABLE -->
+              <div id="gender-res" class="card-body"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header" id="racial-res-header">
+              <a id="racial-res-a" class="btn btn-header-link collapsed" data-toggle="collapse" data-target="#racial-res-body"
+                 aria-expanded="true" aria-controls="racial-res-body">
+                <label>Raw Racial Wage Gap</label><i onclick="showDefinitions(event)" class="fa fa-info-circle" aria-hidden="true"></i>
+              </a>
+            </div>
+            <div id="racial-res-body" class="collapse" aria-labelledby="racial-res-header">
+              <!-- RACIAL TABLE -->
+              <div id="racial-res" class="card-body"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header" id="combined-res-header">
+              <a id="combined-res-a" class="btn btn-header-link collapsed" data-toggle="collapse" data-target="#combined-res-body"
+                 aria-expanded="true" aria-controls="combined-res-body">
+                <label>Raw Gender and Racial Wage Gap</label><i onclick="showDefinitions(event)" class="fa fa-info-circle" aria-hidden="true"></i>
+              </a>
+            </div>
+
+            <div id="combined-res-body" class="collapse" aria-labelledby="combined-res-header">
+              <!-- COMBINED TABLE -->
+              <div id="combined-res" class="card-body"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--  DEFINITIONS MODAL  -->
+      <div class="modal fade" id="definitions-modal" tabindex="-1" aria-labelledby="translate-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="definitions-modal-label">Defining the Raw Wage Gap</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm">
+                  <p>
+                    The raw wage gap, or unadjusted wage gap, goes further to consider where underrepresented groups sit in an
+                    organization, helping us understand the power gaps that exist. Biases and lack of access to promotions, bonuses,
+                    and flexibility can perpetuate inequities across all levels of an organization, even if equal pay for equal
+                    work is in place.
+                  </p>
+                  <p>
+                    We acknowledge that measuring raw wage gaps is not a pass/fail exercise and that these gaps often fluctuate
+                    based on turnover, promotions, changes within organizational structure, and other factors. Our goal is that
+                    doing the math will encourage internal reflection, conversation, and action among your leadership team.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
       <p>
         The raw wage gap, or unadjusted wage gap, goes further to consider where underrepresented groups sit in an
         organization, helping us understand the power gaps that exist. Biases and lack of access to promotions, bonuses,
@@ -243,18 +317,17 @@
         based on turnover, promotions, changes within organizational structure, and other factors. Our goal is that
         doing the math will encourage internal reflection, conversation, and action among your leadership team.
       </p>
-      <div id="res-tables"></div>
 
       <br>
-      <a id="back" class="btn btn-theme mt-2 btn-block">Back</a>
+      <a id="back" class="btn btn-theme mt-2 btn-block">BACK</a>
     </div>
   </div>
 
-  <div class="end-tag main-content">
+  <div class="main-content" style="background-color: #F2F2F2;">
     <div class="container">
       <div class="row">
-        <div class="col-sm">
-          <p>Congratulations on taking the first step in understanding your wage gaps. We want to be involved in
+        <div class="col-sm" style="text-align: center;">
+          <p style="color: black !important;">Congratulations on taking the first step in understanding your wage gaps. We want to be involved in
             continuing the conversation. Please reach out to us at <a href="mailto:team@thebwwc.org">team@thebwwc.org</a> with any questions and visit our
             website: <a href="https://thebwwc.org">thebwwc.org</a> to learn more.</p>
         </div>
@@ -264,16 +337,42 @@
 
 </section>
 
-
-
-<div class="spacer"></div>
-
 <!-- FOOTER -->
-<footer style="text-align: center">
+<footer>
   <section>
-    <div>
-      <span>If you'd like to learn more about measuring gender and racial</span><br>
-      <span>wage gaps, please visit <a href="https://thebwwc.org" target="_blank">thebwwc.org</a></span><br>
+    <div class="row">
+      <div class="col-sm">
+        <a href="https://www.boston.gov/departments/womens-advancement" target="_blank"><img src="assets/images/mowa_white.png" style="width: 15rem;"></a>
+      </div>
+      <div style="text-align: center;" class="col-sm">
+        <span>If you'd like to learn more about measuring gender and racial</span><br>
+        <span>wage gaps, please visit <a href="https://thebwwc.org" target="_blank">thebwwc.org</a></span><br>
+        <div class="socials" style="margin: 1.5%;">
+          <a href="https://www.facebook.com/bostonwomensworkforcecouncil" target="_blank">
+            <span class="fa-stack fa-1x">
+              <i class="fas fa-circle fa-stack-2x"></i> <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+            </span>
+          </a>
+          <a href="https://twitter.com/BostonWomenWork" target="_blank">
+            <span class="fa-stack fa-1x">
+              <i class="fas fa-circle fa-stack-2x"></i> <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+            </span>
+          </a>
+          <a href="https://www.instagram.com/thebwwc/" target="_blank">
+            <span class="fa-stack fa-1x">
+              <i class="fas fa-circle fa-stack-2x"></i> <i class="fab fa-instagram fa-stack-1x fa-inverse"></i>
+            </span>
+          </a>
+          <a href="http://linkedin.com/company/bwwc" target="_blank">
+            <span class="fa-stack fa-1x">
+              <i class="fas fa-circle fa-stack-2x"></i> <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+      <div class="col-sm" style="text-align: right;">
+        <a href="https://www.thebwwc.org" target="_blank"><img src="assets/images/bwwc.png" style="width: 11rem;"></a>
+      </div>
     </div>
   </section>
 </footer>

@@ -28,11 +28,22 @@ h1, h3 {
 }
 
 hr {
+  align-self: center;
+  margin: 0 auto;
   width: 75%;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+i {
+  margin: 0.5rem;
+  color: #288BE4;
+}
+
+i:hover {
+  color: #51ACFF;
 }
 
 input {
@@ -128,10 +139,11 @@ td {
 }
 
 .main-content hr {
-  width: 100%;
-  height: 0.25rem;
   background-color: #091F2F;
   border-radius: 10px;
+  height: 0.25rem;
+  margin: 1rem 0 !important;
+  width: 100%;
 }
 
 .main-content p {
@@ -195,6 +207,22 @@ td {
   margin: 2rem 0 2rem 0;
 }
 
+.socials a:hover .fa-circle {
+  color: #d22d27;
+}
+
+.socials a:hover .fab {
+  color: white !important;
+}
+
+.socials .fa-circle {
+  color: #FB4D42;
+}
+
+.socials span {
+  flex-shrink: 0;
+}
+
 .spacer {
   height: 50px;
   width: 100%;
@@ -254,6 +282,51 @@ td {
 #results {
   font-family: 'Montserrat', sans-serif;
 }
+
+/* accordion styling based on https://codepen.io/ferdisahin/pen/PXXPXM */
+#res-collapse {
+  margin: 50px 0;
+}
+
+#res-collapse #faq .card {
+  border: 0;
+}
+
+#res-collapse #faq .card .card-header {
+  border-radius: 2px;
+  padding: 0;
+}
+
+#res-collapse #faq .card .card-header .btn-header-link {
+  background-color: white;
+  color: #222;
+  display: block;
+  font-size: 1.25em;
+  padding: 20px;
+  text-align: left;
+}
+
+#res-collapse #faq .card .card-header .btn-header-link:after {
+  content: "\f107";
+  color: #288BE4;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  float: right;
+}
+
+#res-collapse #faq .card .card-header .btn-header-link.collapsed:after {
+  content: "\f106";
+}
+
+#res-collapse #faq .card .collapse {
+  border: 0;
+}
+
+#res-collapse #faq .card .collapse.show {
+  line-height: 30px;
+  color: #222;
+}
+
 
 #translate {
   color: #091F2F;
