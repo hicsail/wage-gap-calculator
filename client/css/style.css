@@ -81,7 +81,7 @@ td {
 
 .banner p {
   color: white !important;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', sans-serif !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
@@ -103,6 +103,7 @@ td {
 }
 
 .end-tag {
+  background-color: #F2F2F2;
   padding-left: 32% !important;
   padding-right: 32% !important;
   text-align: center;
@@ -112,11 +113,6 @@ td {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
 }
-
-.end-tag p {
-  font-size: 16px;
-}
-
 
 .hidden {
   display: none !important;
@@ -147,7 +143,6 @@ td {
 }
 
 .main-content p {
-  color: #70707B;
   font-family: 'Lora', sans-serif;
 }
 
@@ -206,6 +201,16 @@ td {
 .result-row {
   margin: 2rem 0 2rem 0;
 }
+
+
+tbody tr:nth-of-type(even) {
+  background-color: #f2f9ff;
+}
+
+tbody tr:nth-of-type(odd) {
+  background-color: white !important;
+}
+
 
 .socials a:hover .fa-circle {
   color: #d22d27;
@@ -288,16 +293,16 @@ td {
   margin: 50px 0;
 }
 
-#res-collapse #faq .card {
+#res-collapse .card {
   border: 0;
 }
 
-#res-collapse #faq .card .card-header {
+#res-collapse .card .card-header {
   border-radius: 2px;
   padding: 0;
 }
 
-#res-collapse #faq .card .card-header .btn-header-link {
+#res-collapse .card .card-header .btn-header-link {
   background-color: white;
   color: #222;
   display: block;
@@ -306,7 +311,7 @@ td {
   text-align: left;
 }
 
-#res-collapse #faq .card .card-header .btn-header-link:after {
+#res-collapse .card .card-header .btn-header-link:after {
   content: "\f107";
   color: #288BE4;
   font-family: 'Font Awesome 5 Free';
@@ -314,15 +319,15 @@ td {
   float: right;
 }
 
-#res-collapse #faq .card .card-header .btn-header-link.collapsed:after {
+#res-collapse .card .card-header .btn-header-link.collapsed:after {
   content: "\f106";
 }
 
-#res-collapse #faq .card .collapse {
+#res-collapse .card .collapse {
   border: 0;
 }
 
-#res-collapse #faq .card .collapse.show {
+#res-collapse .card .collapse.show {
   line-height: 30px;
   color: #222;
 }

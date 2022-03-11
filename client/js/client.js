@@ -3,6 +3,8 @@
 /* * * * * * * */
 
 const urlParams = new URLSearchParams(window.location.search);
+let BASE_URL = "http://localhost:8080"; //use locally
+// let BASE_URL = "http://" + window.location.host + ":8080"; // use on MOC/other server
 // categories to compare white male salary to
 const categories = [{name: "HISPANIC/LATINX", code: "hisp", label:"Hispanic/Latinx Female"}, {name: "WHITE", code: "white", label: "White Female"},
     {name: "BLACK/AFRICAN AMERICAN", code: "afr", label: "Black/African American Female"},
@@ -11,6 +13,7 @@ const categories = [{name: "HISPANIC/LATINX", code: "hisp", label:"Hispanic/Lati
     {name: "TWO OR MORE RACES (NOT HISPANIC OR LATINX)", code: "two", label: "Two or More Races (Not Hispanic or Latinx) Female"},
     {name: "UNREPORTED", code: "unr", label: "Unreported Female"}];
 
+// used to format numbers into currency strings (doesn't work for string to string)
 const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -20,13 +23,16 @@ const formatter = new Intl.NumberFormat('en-US', {
     //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
-let compF, compM, compW, compNW, compWM;
-let report;
+let report; // will hold the BWWC report json file
+let wb = XLSX.utils.book_new(); // workbook to add sheets to for the excel export
+
+// window.jsPDF = window.jspdf.jsPDF;
 
 /* * * * * * */
 /*  HELPERS  */
 /* * * * * * */
 
+// create a dictionary for the combined table inputs of the form {inputCode: input in number form or '-' if empty}
 function constructCombinedCompDict() {
     let compDict = {};
     for (let c of categories) {
@@ -39,6 +45,7 @@ function constructCombinedCompDict() {
     return compDict;
 }
 
+// creates the input section for the combined gender and racial section
 function createCombinedSectionInputs() {
     let section = ``;
     let row = ``;
@@ -90,6 +97,38 @@ function createTranslationOptions() {
         });
 }
 
+// from: https://codepedia.info/javascript-export-html-table-data-to-excel and https://community.retool.com/t/add-multiple-sheets-to-exported-xlsx/6108/3
+// uses SheetJS (CDN in HTML)
+function exportToExcel({filename=null, id=null, sheetName=null, download=false} = {}) {
+    if (id) {
+        // get the table element
+        var elt = document.getElementById(id);
+
+        // make the sheet
+        var ws = XLSX.utils.table_to_sheet(elt);
+
+        // add to workbook (workbook (wb) is a constant defined at the top of the file)
+        XLSX.utils.book_append_sheet(wb, ws, sheetName);
+    }
+    return download ? XLSX.writeFile(wb, filename || 'MySheetName.xlsx') : null;
+}
+
+function exportToPDF() {
+    var w = document.getElementById("res-collapse").offsetWidth;
+    var h = document.getElementById("res-collapse").offsetHeight;
+    html2canvas(document.getElementById("res-collapse")).then(function(canvas) {
+        var img = canvas.toDataURL("image/jpeg", 1);
+        var doc = new jspdf.jsPDF({
+            unit: 'px',
+            format: 'a4',
+            orientation: 'portrait'
+        });
+        // var doc = new jsPDF('p', 'px', [w, h]);
+        doc.addImage(img, 'JPEG', 0, 0, w, h);
+        doc.save('sample-file.pdf');
+    });
+}
+
 // to trigger Google translate without using Google translate UI
 // from: https://stackoverflow.com/questions/6303021/trigger-google-web-translate-element
 function fireEvent(element, event){
@@ -124,7 +163,7 @@ function formatBody(data) {
         } else {
             newRow += `<td>${formatter.format(data['Your Results'][key])}</td>`; // your val
         }
-        newRow += `<td>${formatter.format(data['Report'][key])}</td>`; // report val
+        newRow += `<td>${formatter.format(data['2021 BWWC Report'][key])}</td>`; // report val
         newRow += '</tr>\n';
     }
     return newRow;
@@ -132,7 +171,7 @@ function formatBody(data) {
 
 // format data for binary inputs
 function formatData(compDict, compareValue, display) {
-    let res = {'Your Results': {}, 'Report': {}};
+    let res = {'Your Results': {}, '2021 BWWC Report': {}};
     for (let label of Object.keys(compDict)) {
         if (display) { // only fill in value with gap if there is a number for the comp
             res['Your Results'][`${label} Avg. Total Compensation`] = compDict[label];
@@ -141,14 +180,14 @@ function formatData(compDict, compareValue, display) {
             res['Your Results'][`${label} Avg. Total Compensation`] = '-';
             res['Your Results'][`${label} Wage Gap`] = '-';
         }
-        res['Report'][`${label} Avg. Total Compensation`] = report[`${label} Avg. Total Compensation`];
-        res['Report'][`${label} Wage Gap`] = report[`${label} Wage Gap`];
+        res['2021 BWWC Report'][`${label} Avg. Total Compensation`] = report[`${label} Avg. Total Compensation`];
+        res['2021 BWWC Report'][`${label} Wage Gap`] = report[`${label} Wage Gap`];
     }
 
     return res;
 }
 
-// format headers for binary-input tables
+// format headers for binary input tables
 function formatHeader(headerNames) {
     let newRow = `<tr>\n<th style="border-top: hidden; border-left: hidden" scope="col"></th>\n`;
     for (let h of headerNames) {
@@ -159,14 +198,13 @@ function formatHeader(headerNames) {
 }
 
 // format tables for binary inputs
-function formatTable(title, compDict, compareValue, display) {
+function formatTable(title, compDict, compareValue, display, tableId) {
     let data = formatData(compDict, compareValue, display);
-    console.log(data);
     let header = formatHeader(Object.keys(data));
     let body = formatBody(data);
 
     let newTable = `
-        <table class="table table-hover table-bordered">
+        <table id="${tableId}" class="table table-striped table-bordered">
           <thead>
           ${header}
           </thead>
@@ -260,6 +298,7 @@ function googleTranslateElementInit() {
     new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
 }
 
+// loads the json file that holds the BWWC report numbers (stores values in report variable up top)
 function loadReport() {
     fetch("assets/report.json")
         .then(response => {
@@ -270,12 +309,13 @@ function loadReport() {
         });
 }
 
-// toggle help section (when clicking the info icon)
+// toggle definition modal on results page (when clicking the info icon)
 function showDefinitions(event) {
     event.stopPropagation();
     $('#definitions-modal').modal('show')
 }
 
+// create the default results page state, showing/hiding tables based on what inputs were provided
 function toggleResultTableState(display, headerId, bodyId) {
     if (display) {
         $(headerId).removeClass('collapsed').attr('aria-expanded', true);
@@ -307,7 +347,7 @@ function validateBinaryInputs(id1, id2, section) {
         return {display: false, valid: false};
     }
 
-    // remove error hihglighting
+    // remove error highlighting
     $(id1).removeClass('input-error');
     $(id2).removeClass('input-error');
 
@@ -317,6 +357,7 @@ function validateBinaryInputs(id1, id2, section) {
     return {display: true, valid: true};
 }
 
+// throw error if there is no email provided
 function validateEmail(email) {
     if (email === "") {
         $('#error-text').html(`Please enter an email address`);
@@ -352,7 +393,7 @@ function validateTableInputs(compWM) {
 $(document).ready(function() {
     // $("#results").show();
     $("#data-entry").show(); // show calculator first
-    loadReport();
+    loadReport(); // load the BWWC report to the constant
 
     // fill out headers and cells in input table
     createCombinedSectionInputs();
@@ -371,6 +412,7 @@ $(document).ready(function() {
 
     });
 
+    // format text input as currency while typing
     $("input[data-type='currency']").on({
         keyup: function() {
             formatCurrency($(this));
@@ -380,13 +422,14 @@ $(document).ready(function() {
         }
     });
 
+    // actions for going back from the results page (hide the results section, show the first section, bring back the dark nav)
     $("#back").click(function () {
         $("#results").hide();
         $("#data-entry").show();
-        $("#start").removeClass('hidden');
         $("#dark-nav").removeClass('hidden');
     });
 
+    // when submitting results
     $('#submit').click(function () {
         $('#warning').addClass('hidden');
         let [compF, compM, compW, compNW, compWM] = [$('#comp-f').val(), $('#comp-m').val(), $('#comp-w').val(), $('#comp-nw').val(), $('#comp-wm').val()];
@@ -431,20 +474,44 @@ $(document).ready(function() {
 
             // append the correct tables to the correct divs
             $('#gender-res').empty()
-                .append(formatTable("Raw Gender Wage Gap", {Female: compF}, compM, validGenderInputs.display));
+                .append(formatTable("Raw Gender Wage Gap", {Female: compF}, compM, validGenderInputs.display, "gender-table"));
             $('#racial-res').empty()
-                .append(formatTable("Raw Racial Wage Gap", {'Employees of Color': compNW}, compW, validRacialInputs.display));
+                .append(formatTable("Raw Racial Wage Gap", {'Employees of Color': compNW}, compW, validRacialInputs.display, "racial-table"));
             $('#combined-res').empty()
-                .append(formatTable("Raw Gender and Racial Wage Gap", constructCombinedCompDict(), compWM, validTableInputs.display));
+                .append(formatTable("Raw Gender and Racial Wage Gap", constructCombinedCompDict(), compWM, validTableInputs.display, "combined-table"));
 
             // toggle collapsible sections to hide calculator and show results
             $("#data-entry").hide();
             $("#results").show();
+            // scrolls to the top of the results section automatically
             $('html, body').animate({
                 scrollTop: $("#results-section")
             }, 200);
-            $("#start").addClass('hidden');
-            $("#dark-nav").addClass('hidden');
+            $("#dark-nav").addClass('hidden'); // show dark nav again
+
+            // submit email address to server
+            $.post(`${BASE_URL}/api/submissions`, {email: email})
+                .done(function (data) {
+                    console.log(`Success from email POST`);
+                })
+                .fail(function (err) {
+                    console.log(`Error from email POST: ${JSON.stringify(err)}`);
+                });
+
+            // order of calls to make to use the PDF export function
+            // if (validGenderInputs.display) {
+            //     exportToExcel({id: "gender-table", sheetName: "Gender Wage Gap"});
+            // }
+            // if (validRacialInputs.display) {
+            //     exportToExcel({id: "racial-table", sheetName: "Racial Wage Gap"});
+            // }
+            // if (validTableInputs.display) {
+            //     exportToExcel({id: "combined-table", sheetName: "Gender and Racial Wage Gap"});
+            // }
+            // exportToPDF();
+
+            // call to make to use the Excel export function
+            // exportToExcel({filename: "Wage_Gap_Calculator_Results.xlsx", download: true})
 
         }
     });
