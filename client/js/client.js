@@ -359,8 +359,8 @@ function validateBinaryInputs(id1, id2, section) {
 
 // throw error if there is no email provided
 function validateEmail(email) {
-    if (email === "") {
-        $('#error-text').html(`Please enter an email address`);
+    if ((email === "") || (email.indexOf('@') === -1)){
+        $('#error-text').html(`Please enter a valid email address`);
         $('#error').removeClass('hidden');
         return false;
     }

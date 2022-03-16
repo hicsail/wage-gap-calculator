@@ -267,6 +267,20 @@ tbody tr:nth-of-type(odd) {
 .show>.btn-outline-theme.dropdown-toggle:focus{box-shadow:0 0 0 .2rem #51ACFF}
 /* end custom button color */
 
+/* Changing placeholder text color */
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #bbbbbb;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #bbbbbb;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #bbbbbb;
+}
+
 /* * * * * * * * */
 /* ID LEVEL CSS  */
 /* * * * * * * * */
