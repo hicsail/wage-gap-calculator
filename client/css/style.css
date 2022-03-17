@@ -92,8 +92,9 @@ td {
 }
 
 .btn-block {
-  width: 20%;
   color: white !important;
+  max-width: 150px;
+  white-space: normal;
 }
 
 .card-main {
