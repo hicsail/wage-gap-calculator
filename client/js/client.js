@@ -139,7 +139,7 @@ function fireEvent(element, event){
         var evt = document.createEventObject();
         return element.fireEvent('on'+event, evt)
     }
-    else{
+    else {
         // dispatch for firefox + others
         console.log("In HTML5 dispatchEvent");
         var evt = document.createEvent("HTMLEvents");
@@ -286,10 +286,12 @@ function formatCurrency(input, blur) {
     // send updated string to input
     input.val(input_val);
 
-    // put caret back in the right position
-    var updated_len = input_val.length;
-    caret_pos = updated_len - original_len + caret_pos;
-    input[0].setSelectionRange(caret_pos, caret_pos);
+    if (blur !== "blur") { // moving this to an IF came from: https://stackoverflow.com/questions/56289798/onblur-disables-clicks-outside-input-and-clicking-other-input-on-ios-and-mac-s
+        // put caret back in the right position
+        var updated_len = input_val.length;
+        caret_pos = updated_len - original_len + caret_pos;
+        input[0].setSelectionRange(caret_pos, caret_pos);
+    }
 }
 
 // used in HTML for Google translate
@@ -403,7 +405,6 @@ $(document).ready(function() {
     $('body').on('click', 'a.lang-link', function() {
         // trigger google translate web element
         var value = $(this).attr("rel");
-        console.log(value);
         var jObj = $('.goog-te-combo');
         var db = jObj.get(0);
         jObj.val(value);
