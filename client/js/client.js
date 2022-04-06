@@ -395,6 +395,7 @@ function validateTableInputs(compWM) {
 $(document).ready(function() {
     // $("#results").show();
     $("#data-entry").show(); // show calculator first
+    $(".custom_info").tooltip({animation: true}); // allow tooltips
     loadReport(); // load the BWWC report to the constant
 
     // fill out headers and cells in input table
