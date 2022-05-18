@@ -282,10 +282,6 @@ tbody tr:nth-of-type(odd) {
   color: #bbbbbb;
 }
 
-.custom_info {
-  border-bottom: 1px dashed;
-}
-
 /* * * * * * * * */
 /* ID LEVEL CSS  */
 /* * * * * * * * */
