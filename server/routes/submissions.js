@@ -3,10 +3,10 @@ const Submission = require("../models/submission");
 module.exports = function(router){
 
     // Get all posts
-    router.get("/submissions", async (req, res) => {
-        const submissions = await Submission.find();
-        res.send(submissions);
-    });
+    // router.get("/submissions", async (req, res) => {
+    //     const submissions = await Submission.find();
+    //     res.send('what');
+    // });
 
     // create new submission
     router.post("/submissions", async (req, res) => {

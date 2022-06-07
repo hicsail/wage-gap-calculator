@@ -358,3 +358,7 @@ tbody tr:nth-of-type(odd) {
   font-weight: 400;
   margin-right: 1rem;
 }
+
+#head-section a {
+  color: white;
+}

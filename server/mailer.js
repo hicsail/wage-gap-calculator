@@ -1,4 +1,5 @@
 require("dotenv").config();
+// require("dotenv").config({path: "../.env"});
 const fs = require('fs');
 const mongoose = require("mongoose");
 const nodemailer = require('nodemailer');
@@ -6,7 +7,6 @@ const XLSX = require("xlsx");
 const Submission = require("./models/submission");
 
 const fileName = "BWWC_Wage_Gap_Calculator_Emails.xlsx";
-
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
     .then(async () => {
         const submissions = await Submission.find({collected: false});
@@ -52,24 +52,22 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
                 } else {
                     console.log('Email Sent Successfully');
                     console.log(info);
-
+                    sent = true;
                     // remove excel file from local file system after sending it
                     try {
                         fs.unlinkSync(fileName);
+                        Submission.updateMany({collected: false}, {$set: {collected: true}}, {upsert: true}).then(() => {
+                            console.log("updated entries");
+                        })
+                        .catch((e) => console.log("failed to update mongodb", e));
                     } catch (err) {
                         console.error(err);
                     }
                 }
             });
-
-            // mark the email addresses as collected
-            try {
-                await Submission.updateMany({collected: false}, {$set: {collected: true}}, {upsert: true});
-            } catch (e) {
-                console.log(e);
-            }
+            Submission.updateMany({collected: false}, {$set: {collected: true}}, {upsert: true}).then(() => {
+                console.log("updated entries");
+                mongoose.connection.close();
+            }).catch((e) => console.log("failed to update mongodb", e));
         }
-
-        mongoose.connection.close();
-
     });
