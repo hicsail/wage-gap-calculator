@@ -23,14 +23,15 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
             XLSX.writeFile(wb, fileName); // this writes to the local file system but will be deleted after
 
             const transporter = nodemailer.createTransport({
-                host: 'smtp.gmail.com',
-                service: 'gmail',
+                host: 'smtp.mail.yahoo.com',
+                service: 'yahoo',
                 port: 465,
-                secure: true,
+                secure: false,
                 auth: {
                     user: process.env.SMTP_USERNAME,
                     pass: process.env.SMTP_PASSWORD
-                }
+                },
+		logger: true
             });
 
             const mailConfigurations = {
