@@ -57,10 +57,6 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
                     // remove excel file from local file system after sending it
                     try {
                         fs.unlinkSync(fileName);
-                        Submission.updateMany({collected: false}, {$set: {collected: true}}, {upsert: true}).then(() => {
-                            console.log("updated entries");
-                        })
-                        .catch((e) => console.log("failed to update mongodb", e));
                     } catch (err) {
                         console.error(err);
                     }
