@@ -75,7 +75,7 @@ td {
   background-color: rgba(84, 84, 84, .8); /* Tint color */
   background-blend-mode: multiply;
   color: white !important;
-  padding: 50px 18% 50px 18% !important;
+  padding: 50px 0% 50px 0% !important;
 }
 
 .top-banner {
@@ -137,7 +137,7 @@ td {
 
 /* always have some space below the content so that we can scroll properly */
 .main-content {
-  padding: 50px 25% 50px 25%;
+  padding: 50px 0% 50px 0%;
   scroll-margin-top: 2rem;
 }
 
@@ -363,8 +363,4 @@ tbody tr:nth-of-type(odd) {
   font-size: 1.3rem;
   font-weight: 400;
   margin-right: 1rem;
-}
-
-#head-section a {
-  color: white;
 }
