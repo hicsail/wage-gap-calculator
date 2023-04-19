@@ -85,6 +85,32 @@ td {
   background-color: #091F2F;
 }
 
+.bottom-banner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive layout - makes a one column layout instead of a two-column layout */
+@media (max-width: 1080px) {
+  .bottom-banner-container {
+    flex-direction: column;
+  }
+}
+
+.bottom-banner-item {
+  padding: 0 3rem 0 3rem;
+  flex: 1;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.padding {
+  padding: 1rem;
+}
+
 .banner p {
   font-family: 'Montserrat', sans-serif !important;
   margin-left: 0 !important;
