@@ -72,11 +72,14 @@ td {
 /* * * * * * * * * * */
 
 .banner {
-  background-image: url("../assets/images/banner.jpeg");
   background-color: rgba(84, 84, 84, .8); /* Tint color */
   background-blend-mode: multiply;
   color: white !important;
   padding: 50px 18% 50px 18% !important;
+}
+
+.top-banner {
+  background-image: url("../assets/images/banner.jpeg");
 }
 
 .banner p {
