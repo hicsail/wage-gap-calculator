@@ -79,6 +79,10 @@ td {
 .top-banner {
   background-image: url("../assets/images/banner.jpeg");
   min-height: 400px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
 }
 
 .bottom-banner {
