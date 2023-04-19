@@ -19,12 +19,10 @@ footer a:hover {
   color: #FB4D42;
 }
 
-h1, h3 {
-  align-self: center;
+h1, h2, h3 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
-  margin: 0 0 4% 0;
-  text-align: center;
+  margin: 0 0 20px 0;
 }
 
 hr {
@@ -53,7 +51,7 @@ input {
 }
 
 p {
-  font-size: 18px;
+  font-size: 17px;
   line-height: 28px;
   letter-spacing: 0.1px;
 }
@@ -72,15 +70,53 @@ td {
 /* * * * * * * * * * */
 
 .banner {
-  background-image: url("../assets/images/banner.jpeg");
   background-color: rgba(84, 84, 84, .8); /* Tint color */
   background-blend-mode: multiply;
   color: white !important;
-  padding: 50px 18% 50px 18% !important;
+  padding: 50px 0% 50px 0% !important;
+}
+
+.top-banner {
+  background-image: url("../assets/images/banner.jpeg");
+  min-height: 450px;
+  max-height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.bottom-banner {
+  background-color: #091F2F;
+}
+
+.bottom-banner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive layout - makes a one column layout instead of a two-column layout */
+@media (max-width: 1080px) {
+  .bottom-banner-container {
+    flex-direction: column;
+  }
+}
+
+.bottom-banner-item {
+  padding: 0 3rem 0 3rem;
+  flex: 1;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.padding {
+  padding: 1rem;
 }
 
 .banner p {
-  color: white !important;
   font-family: 'Montserrat', sans-serif !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
@@ -131,7 +167,7 @@ td {
 
 /* always have some space below the content so that we can scroll properly */
 .main-content {
-  padding: 50px 25% 50px 25%;
+  padding: 50px 0% 50px 0%;
   scroll-margin-top: 2rem;
 }
 
@@ -357,8 +393,4 @@ tbody tr:nth-of-type(odd) {
   font-size: 1.3rem;
   font-weight: 400;
   margin-right: 1rem;
-}
-
-#head-section a {
-  color: white;
 }
