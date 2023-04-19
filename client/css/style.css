@@ -82,8 +82,11 @@ td {
   background-image: url("../assets/images/banner.jpeg");
 }
 
+.bottom-banner {
+  background-color: #091F2F;
+}
+
 .banner p {
-  color: white !important;
   font-family: 'Montserrat', sans-serif !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
