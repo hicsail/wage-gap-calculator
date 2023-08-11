@@ -8,7 +8,7 @@ The wage-gap-calculator is a tool to help companies assess their individual orga
 - MongoDB
 
 ## Local Installation
-1. Open a terminal and clone this repo to your machine: `git clone https://github.com/hicsail/wage-gap-calculator.git`
+1. Open a terminal and clone this repo to your machine: `git clone https://github.com/hicsail/wage-gap-calculator.git`.
 2. Create a `.env` file in the top level directory of the project of the following form:
 ```
 MONGODB_URI={URI of your local mongodb including the database name e.g. mongodb://localhost:{port}/{db_name}}

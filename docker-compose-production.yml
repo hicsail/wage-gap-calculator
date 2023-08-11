@@ -1,0 +1,25 @@
+#./docker-compose-production.yml
+version: '3'
+services:
+  server:
+    container_name: wage-gap-calculator-server
+    image: hicsail/wage-gap-calculator
+    restart: always
+    ports:
+      - 8080:8080
+    env_file:
+      - ./stack.env
+      
+  db:
+    image: mongo
+    container_name: wage-gap-calculator-db
+    restart: always
+    ports:
+      - 27017:27017
+    env_file:
+      - ./stack.env
+    volumes:
+      - wage-gap-calculator-production:/data/db
+
+volumes:
+    wage-gap-calculator-production: ~
