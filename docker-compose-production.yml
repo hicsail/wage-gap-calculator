@@ -9,10 +9,7 @@ services:
       - 8080:8080
     env_file:
       - ./stack.env
-    depends_on:
-      db:
-        condition: service_healthy
-
+      
   db:
     image: mongo
     container_name: wage-gap-calculator-db
@@ -24,18 +21,5 @@ services:
     volumes:
       - wage-gap-calculator-production:/data/db
 
-    healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.stats()", "mongodb://localhost"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    backup:
-      image: offen/docker-volume-backup:v2.27.0
-      restart: always
-      env_file:
-        - ./stack.env
-      volumes:
-        - wage-gap-calculator-production:/backup:ro
-
 volumes:
-    wage-gap-calclator-production: ~
+    wage-gap-calculator-production: ~

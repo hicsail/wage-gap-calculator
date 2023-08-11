@@ -12,15 +12,9 @@ services:
       - RECEIVER=rishis@bu.edu
       - COOKIE_SECRET=!k3yb04rdK4tz~4qu4~k3yb04rdd0gz!
       - NODE_ENV=local
-    depends_on:
-      - db
 
   db:
     image: mongo
     volumes:
       - ./db:/data/db
-    healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.stats()", "mongodb://localhost"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+ 
