@@ -12,11 +12,11 @@ RUN npm install
 COPY . .
 
 # Setup the cron job
-RUN echo "0 0 * * * /path/to/your/script.sh >> /path/to/logfile 2>&1" | crontab -
+RUN echo "0 0 * * * /home/centos/calculator-mailer.sh >> /home/centos/calculator-mailer-logs 2>&1" | crontab -
 
 EXPOSE 8080
 
 # Use a startup script to run both cron and your application
-COPY ./start.sh /start.sh
-RUN chmod +x /start.sh
-CMD ["/start.sh"]
+COPY ./startup.sh /startup.sh
+RUN chmod +x /startup.sh
+CMD ["/startup.sh"]
