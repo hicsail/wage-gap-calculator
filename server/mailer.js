@@ -23,8 +23,8 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
             XLSX.writeFile(wb, fileName); // this writes to the local file system but will be deleted after
 
             const transporter = nodemailer.createTransport({
-                host: 'smtp.mail.yahoo.com',
-                service: 'yahoo',
+                host: 'smtp.mailgun.org/',
+                service: 'MailGun',
                 port: 465,
                 secure: false,
                 auth: {
@@ -35,7 +35,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
             });
 
             const mailConfigurations = {
-                from: process.env.SMTP_USERNAME,
+                from: process.env.SMTP_SENDER,
                 to: process.env.RECEIVER,
                 subject: 'BWWC Wage Gap Calculator Submitters',
                 text:'Please find attached an excel file of people who have submitted to the wage gap calculator.',

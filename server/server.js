@@ -20,7 +20,7 @@ app.use(function(req, res, next) {
 
 app.use(express.static(__dirname + '/../client'));
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
+mongoose.connect("mongodb://localhost:27017/calculator", { useNewUrlParser: true })
     .then(() => {
         app.use("/api", routes); // adds routes from routes file
 

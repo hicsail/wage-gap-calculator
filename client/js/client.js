@@ -59,14 +59,14 @@ function createCombinedSectionInputs() {
             // let row = `<div class="row">`;
             let col = `<div class="col-sm">
                         <label for="${cat.code}">${cat.name} FEMALE</label><br>
-                        <input type="text" id="${cat.code}" name="${cat.code}" pattern="^\\$\\d{1,3}(,\\d{3})*(\\.\\d+)?$"
+                        <input type="text" id="${cat.code}" name="${cat.code}" pattern="^\\$\\d{1,3}(,\\d{3})*(\\.\\d+)?$" 
                             value="" data-type="currency" placeholder="$100,000.00">
                        </div>`;
             row = `<div class="row table-row">${col}`;
         } else { // add to existing row and close it
             let col = `<div class="col-sm">
                         <label for="hispF">${cat.name} FEMALE</label><br>
-                        <input type="text" id="${cat.code}" name="${cat.code}" pattern="^\\$\\d{1,3}(,\\d{3})*(\\.\\d+)?$"
+                        <input type="text" id="${cat.code}" name="${cat.code}" pattern="^\\$\\d{1,3}(,\\d{3})*(\\.\\d+)?$" 
                             value="" data-type="currency" placeholder="$100,000.00">
                        </div>`;
             row += `${col}</div>`; // add the second column and close the row you're working on
@@ -471,8 +471,6 @@ $(document).ready(function() {
             [compF, compM, compW, compNW, compWM] = [Number(compF.replace(/[^0-9.-]+/g,"")),
                 Number(compM.replace(/[^0-9.-]+/g,"")), Number(compW.replace(/[^0-9.-]+/g,"")),
                 Number(compNW.replace(/[^0-9.-]+/g,"")), Number(compWM.replace(/[^0-9.-]+/g,""))];
-
-            console.log(compF, compM, compW, compNW, compWM);
 
             // toggle initial state of tables based on whether input was provided
             toggleResultTableState(validGenderInputs.display, '#gender-res-a', '#gender-res-body');
