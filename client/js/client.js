@@ -59,14 +59,14 @@ function createCombinedSectionInputs() {
             // let row = `<div class="row">`;
             let col = `<div class="col-sm">
                         <label for="${cat.code}">${cat.name} FEMALE</label><br>
-                        <input type="text" id="${cat.code}" name="${cat.code}" pattern="^\\$\\d{1,3}(,\\d{3})*(\\.\\d+)?$" 
+                        <input type="text" id="${cat.code}" name="${cat.code}" pattern="^\\$\\d{1,3}(,\\d{3})*(\\.\\d+)?$"
                             value="" data-type="currency" placeholder="$100,000.00">
                        </div>`;
             row = `<div class="row table-row">${col}`;
         } else { // add to existing row and close it
             let col = `<div class="col-sm">
                         <label for="hispF">${cat.name} FEMALE</label><br>
-                        <input type="text" id="${cat.code}" name="${cat.code}" pattern="^\\$\\d{1,3}(,\\d{3})*(\\.\\d+)?$" 
+                        <input type="text" id="${cat.code}" name="${cat.code}" pattern="^\\$\\d{1,3}(,\\d{3})*(\\.\\d+)?$"
                             value="" data-type="currency" placeholder="$100,000.00">
                        </div>`;
             row += `${col}</div>`; // add the second column and close the row you're working on
@@ -166,7 +166,7 @@ function formatBody(data) {
         } else {
             newRow += `<td>${formatter.format(data['Your Results'][key])}</td>`; // your val
         }
-        newRow += `<td>${formatter.format(data['2021 BWWC Report'][key])}</td>`; // report val
+        newRow += `<td>${formatter.format(data['2023 BWWC Report'][key])}</td>`; // report val
         newRow += '</tr>\n';
     }
     return newRow;
@@ -174,7 +174,7 @@ function formatBody(data) {
 
 // format data for binary inputs
 function formatData(compDict, compareValue, display) {
-    let res = {'Your Results': {}, '2021 BWWC Report': {}};
+    let res = {'Your Results': {}, '2023 BWWC Report': {}};
     for (let label of Object.keys(compDict)) {
         if (display && compDict[label] > 0 && compareValue > 0) { // only fill in value with gap if there is a number for the comp
             res['Your Results'][`${label} Avg. Total Compensation`] = compDict[label];
@@ -183,8 +183,8 @@ function formatData(compDict, compareValue, display) {
             res['Your Results'][`${label} Avg. Total Compensation`] = '-';
             res['Your Results'][`${label} Wage Gap`] = '-';
         }
-        res['2021 BWWC Report'][`${label} Avg. Total Compensation`] = report[`${label} Avg. Total Compensation`];
-        res['2021 BWWC Report'][`${label} Wage Gap`] = report[`${label} Wage Gap`];
+        res['2023 BWWC Report'][`${label} Avg. Total Compensation`] = report[`${label} Avg. Total Compensation`];
+        res['2023 BWWC Report'][`${label} Wage Gap`] = report[`${label} Wage Gap`];
     }
 
     return res;
