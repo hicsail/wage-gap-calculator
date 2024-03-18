@@ -1,0 +1,25 @@
+#./docker-compose.yml
+version: '3'
+services:
+  server:
+    container_name: wage-gap-calculator-server
+    build: .  # Build using the local Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
+    env_file:
+      - ./.env
+      
+  db:
+    image: mongo
+    container_name: wage-gap-calculator-db
+    restart: always
+    ports:
+      - 27017:27017
+    env_file:
+      - ./.env
+    volumes:
+      - wage-gap-calculator-production:/data/db
+
+volumes:
+  wage-gap-calculator-production:
