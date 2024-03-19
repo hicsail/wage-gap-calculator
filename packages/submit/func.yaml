@@ -6,3 +6,5 @@ build:
   buildEnvs:
   - name: BP_NODE_RUN_SCRIPTS
     value: build
+envs:
+  - value: '{{ configMap:wage-gap-calculator-backend-config }}'
