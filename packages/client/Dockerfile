@@ -1,6 +1,8 @@
 ## NGINX Server
-FROM nginx:1.25-alpine
+FROM registry.access.redhat.com/ubi7/nginx-120
 
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+ADD ./nginx.conf "${NGINX_CONF_PATH}"
 
-COPY ./src/ /usr/share/nginx/html
+ADD ./src/ .
+
+CMD nginx -g "daemon off;"
