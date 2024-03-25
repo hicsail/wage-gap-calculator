@@ -8,3 +8,10 @@ build:
     value: build
 envs:
   - value: '{{ configMap:wage-gap-calculator-backend-config }}'
+  - name: MONGO_DB
+    value: '{{ env:MONGO_DB }}'
+  - name: MONGO_URI
+    value: '{{ env:MONGO_URI }}'
+  - name: MONGO_COLLECTION
+    value: '{{ env:MONGO_COLLECTION }}'
+
