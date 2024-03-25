@@ -11,7 +11,7 @@ envs:
   - name: MONGO_DB
     value: '{{ env:MONGO_DB }}'
   - name: MONGO_URI
-    value: '{{ env:MONGO_URI }}'
+    value: mongodb://wage-gap-calculator-mongo:27017
   - name: MONGO_COLLECTION
     value: '{{ env:MONGO_COLLECTION }}'
 
