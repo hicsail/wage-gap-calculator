@@ -6,12 +6,3 @@ build:
   buildEnvs:
   - name: BP_NODE_RUN_SCRIPTS
     value: build
-envs:
-  - value: '{{ configMap:wage-gap-calculator-backend-config }}'
-  - name: MONGO_DB
-    value: '{{ env:MONGO_DB }}'
-  - name: MONGO_URI
-    value: mongodb://wage-gap-calculator-mongo:27017
-  - name: MONGO_COLLECTION
-    value: '{{ env:MONGO_COLLECTION }}'
-
