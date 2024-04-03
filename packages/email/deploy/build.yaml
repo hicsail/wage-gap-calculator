@@ -41,7 +41,7 @@ spec:
     git:
       uri: 'https://github.com/hicsail/wage-gap-calculator'
       ref: chore/cbolles/openshift-deploy
-    contextDir: /packages/submit
+    contextDir: /packages/email
   triggers:
     - type: Generic
       generic:

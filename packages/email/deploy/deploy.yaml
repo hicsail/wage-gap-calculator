@@ -49,6 +49,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: wage-gap-calculator-backend-config
+            - secretRef:
+                name: smpt-credentials
       enableServiceLinks: false
       timeoutSeconds: 300
   traffic:
