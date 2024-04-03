@@ -1,10 +1,9 @@
 import { Context, StructuredReturn } from 'faas-js-runtime';
 import { MongoClient, Collection } from 'mongodb';
-// import * as dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 // Configure environment variables
-// dotenv.config();
-
+dotenv.config();
 
 /** Get the email collection from the DB */
 const getEmailCollection = async (): Promise<Collection> => {
