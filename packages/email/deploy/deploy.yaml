@@ -1,0 +1,56 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    app.openshift.io/route-disabled: 'false'
+    app.openshift.io/vcs-ref: chore/cbolles/openshift-deploy
+    app.openshift.io/vcs-uri: 'https://github.com/hicsail/wage-gap-calculator'
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"wage-gap-email:latest","namespace":"sail-24887a"},"fieldPath":"spec.template.spec.containers[?(@.name==\"wage-gap-email\")].image","pause":"false"}]
+  name: wage-gap-email
+  namespace: sail-24887a
+  labels:
+    app.kubernetes.io/component: wage-gap-email
+    app.kubernetes.io/instance: wage-gap-email
+    app.kubernetes.io/name: wage-gap-email
+    app.kubernetes.io/part-of: wage-gap-calculator
+    app.openshift.io/runtime: nodejs
+    app.openshift.io/runtime-version: 16-ubi8
+    function.knative.dev: 'true'
+spec:
+  template:
+    metadata:
+      annotations:
+        alpha.image.policy.openshift.io/resolve-names: '*'
+        autoscaling.knative.dev/target: '100'
+        autoscaling.knative.dev/targetUtilizationPercentage: '70'
+        autoscaling.knative.dev/window: 60s
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/component: wage-gap-email
+        app.kubernetes.io/instance: wage-gap-email
+        app.kubernetes.io/part-of: wage-gap-calculator
+        app.openshift.io/runtime: nodejs
+        app.openshift.io/runtime-version: 16-ubi8
+    spec:
+      containerConcurrency: 0
+      containers:
+        - image: image-registry.openshift-image-registry.svc:5000/sail-24887a/wage-gap-email
+          imagePullPolicy: Always
+          name: wage-gap-email
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          readinessProbe:
+            successThreshold: 1
+            tcpSocket:
+              port: 0
+          resources: {}
+          envFrom:
+            - configMapRef:
+                name: wage-gap-calculator-backend-config
+      enableServiceLinks: false
+      timeoutSeconds: 300
+  traffic:
+    - latestRevision: true
+      percent: 100

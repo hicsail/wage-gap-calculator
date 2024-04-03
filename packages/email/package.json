@@ -35,6 +35,8 @@
   },
   "dependencies": {
     "@types/node": "^20.4.2",
-    "faas-js-runtime": "^2.2.2"
+    "dotenv": "^16.4.5",
+    "faas-js-runtime": "^2.2.2",
+    "mongodb": "^6.5.0"
   }
 }
