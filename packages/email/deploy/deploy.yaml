@@ -2,7 +2,7 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   annotations:
-    app.openshift.io/route-disabled: 'false'
+    app.openshift.io/route-disabled: 'true'
     app.openshift.io/vcs-ref: chore/cbolles/openshift-deploy
     app.openshift.io/vcs-uri: 'https://github.com/hicsail/wage-gap-calculator'
     image.openshift.io/triggers: >-
