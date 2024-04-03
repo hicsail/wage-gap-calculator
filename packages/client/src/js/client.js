@@ -4,7 +4,8 @@
 
 const urlParams = new URLSearchParams(window.location.search);
 //let BASE_URL = "http://localhost:8080"; //use locally
-let BASE_URL = "https://" + window.location.host; // use on MOC/other server
+const EMAIL_URL = "https://wage-gap-submit-sail-24887a.apps.shift.nerc.mghpcc.org/";
+
 // categories to compare white male salary to
 const categories = [{name: "HISPANIC/LATINX", code: "hisp", label:"Hispanic/Latinx Female"}, {name: "WHITE", code: "white", label: "White Female"},
     {name: "BLACK/AFRICAN AMERICAN", code: "afr", label: "Black/African American Female"},
@@ -495,7 +496,7 @@ $(document).ready(function() {
             $("#dark-nav").addClass('hidden'); // show dark nav again
 
             // submit email address to server
-            $.post(`${BASE_URL}/api/submissions`, {email: email})
+            $.post(EMAIL_URL, {email: email})
                 .done(function (data) {
                     console.log(`Success from email POST`);
                 })
