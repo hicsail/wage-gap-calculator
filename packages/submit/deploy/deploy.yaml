@@ -35,10 +35,7 @@ spec:
     spec:
       containerConcurrency: 0
       containers:
-        - env:
-            - name: MONGO_URI
-              value: 'mongodb://wage-gap-calculator-mongo:27017'
-          image: image-registry.openshift-image-registry.svc:5000/sail-24887a/wage-gap-submit
+        - image: image-registry.openshift-image-registry.svc:5000/sail-24887a/wage-gap-submit
           imagePullPolicy: Always
           name: wage-gap-submit
           ports:
@@ -49,6 +46,9 @@ spec:
             tcpSocket:
               port: 0
           resources: {}
+          envFrom:
+            - configMapRef:
+                name: wage-gap-calculator-backend-config
       enableServiceLinks: false
       timeoutSeconds: 300
   traffic:
