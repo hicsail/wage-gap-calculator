@@ -54,7 +54,7 @@ const handle = async (context: Context, body: any): Promise<StructuredReturn> =>
   }
 
   return {
-    body: { test: 'hello' },
+    body: { test: '3' },
     headers: {
       'content-type': 'application/json'
     }
