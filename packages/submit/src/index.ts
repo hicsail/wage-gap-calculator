@@ -7,7 +7,7 @@ dotenv.config();
 
 /** Get the email collection from the DB */
 const getEmailCollection = async (): Promise<Collection> => {
-  console.log('wow');
+  console.log('wow 2');
   const mongoURI: string | undefined = process.env.MONGO_URI;
   if (!mongoURI) {
     throw new Error(`MONGO_URI not defined`);
