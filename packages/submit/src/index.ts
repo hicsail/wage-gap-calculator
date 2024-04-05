@@ -7,6 +7,7 @@ dotenv.config();
 
 /** Get the email collection from the DB */
 const getEmailCollection = async (): Promise<Collection> => {
+  console.log('wow');
   const mongoURI: string | undefined = process.env.MONGO_URI;
   if (!mongoURI) {
     throw new Error(`MONGO_URI not defined`);
@@ -54,7 +55,7 @@ const handle = async (context: Context, body: any): Promise<StructuredReturn> =>
   }
 
   return {
-    body: { test: '8' },
+    body: { test: '9' },
     headers: {
       'content-type': 'application/json'
     }
