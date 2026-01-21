@@ -166,7 +166,7 @@ function formatBody(data) {
         } else {
             newRow += `<td>${formatter.format(data['Your Results'][key])}</td>`; // your val
         }
-        newRow += `<td>${formatter.format(data['2023 BWWC Report'][key])}</td>`; // report val
+        newRow += `<td>${formatter.format(data['2025 BWWC Report'][key])}</td>`; // report val
         newRow += '</tr>\n';
     }
     return newRow;
@@ -174,7 +174,7 @@ function formatBody(data) {
 
 // format data for binary inputs
 function formatData(compDict, compareValue, display) {
-    let res = {'Your Results': {}, '2023 BWWC Report': {}};
+    let res = {'Your Results': {}, '2025 BWWC Report': {}};
     for (let label of Object.keys(compDict)) {
         if (display && compDict[label] > 0 && compareValue > 0) { // only fill in value with gap if there is a number for the comp
             res['Your Results'][`${label} Avg. Total Compensation`] = compDict[label];
@@ -183,8 +183,8 @@ function formatData(compDict, compareValue, display) {
             res['Your Results'][`${label} Avg. Total Compensation`] = '-';
             res['Your Results'][`${label} Wage Gap`] = '-';
         }
-        res['2023 BWWC Report'][`${label} Avg. Total Compensation`] = report[`${label} Avg. Total Compensation`];
-        res['2023 BWWC Report'][`${label} Wage Gap`] = report[`${label} Wage Gap`];
+        res['2025 BWWC Report'][`${label} Avg. Total Compensation`] = report[`${label} Avg. Total Compensation`];
+        res['2025 BWWC Report'][`${label} Wage Gap`] = report[`${label} Wage Gap`];
     }
 
     return res;
