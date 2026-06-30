@@ -1,0 +1,20 @@
+services:
+  app:
+    image: hicsail/wage-gap-calculator:latest
+    ports:
+      - "${BWWC_WEBSITE_PORT}:8080"
+    depends_on:
+      - mongo
+    env_file:
+      - stack.env
+    restart: always
+
+  mongo:
+    image: mongo:6.0.1
+    volumes:
+      - bwwc_website_mongo_data:/data/db
+    restart: always
+
+volumes:
+  bwwc_website_mongo_data:
+    external: true
