@@ -8,11 +8,13 @@ services:
       MONGO_URI: mongodb://mongo:27017/calculator
     depends_on:
       - mongo
+    restart: always
 
   mongo:
     image: mongo:6.0.1
     volumes:
       - bwwc_website_mongo_data:/data/db
+    restart: always
 
 volumes:
   bwwc_website_mongo_data:
